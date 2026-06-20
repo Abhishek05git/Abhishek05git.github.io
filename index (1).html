@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Abhishek Singh — ML Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #0f0f1a;
+    --bg3: #13131f;
+    --border: #1e1e2e;
+    --accent: #7c6af5;
+    --accent2: #a78bfa;
+    --green: #4ade80;
+    --cyan: #22d3ee;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── SCANLINE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--accent2);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.8rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent2); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 6rem 2rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-inner { width: 100%; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  .hero-name {
+    font-family: var(--mono);
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+    background: linear-gradient(135deg, #e2e8f0 30%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-roles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-role {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.75rem;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+  }
+
+  .code-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    line-height: 1.9;
+    margin-bottom: 2rem;
+    max-width: 540px;
+  }
+  .code-block .k { color: var(--accent2); }
+  .code-block .s { color: var(--green); }
+  .code-block .p { color: var(--muted); }
+  .code-block .v { color: var(--cyan); }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    padding: 0.6rem 1.4rem;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { color: var(--text); border-color: var(--muted); }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat { }
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    color: var(--text);
+  }
+
+  /* ── ABOUT ── */
+  .about-text {
+    font-size: 1rem;
+    color: #94a3b8;
+    line-height: 1.85;
+    max-width: 680px;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .skill-cat {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.2rem 1.4rem;
+  }
+
+  .skill-cat-title {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.8rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .skill-tag {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+  }
+
+  /* ── PROJECTS ── */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.8rem;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .project-card:hover { border-color: var(--accent); }
+
+  .project-num {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-title {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .project-sub {
+    font-size: 0.8rem;
+    color: var(--accent2);
+    font-style: italic;
+    margin-bottom: 0.8rem;
+  }
+
+  .project-desc {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .project-highlights {
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+  .project-highlights li {
+    font-size: 0.8rem;
+    color: #64748b;
+    padding: 0.2rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .project-highlights li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .project-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    background: rgba(124,106,245,0.1);
+    border: 1px solid rgba(124,106,245,0.3);
+    color: var(--accent2);
+  }
+
+  .project-link {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--accent2);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+  .project-link:hover { color: var(--green); }
+
+  /* ── EXPERIENCE ── */
+  .exp-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .exp-title {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .exp-duration {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--green);
+    border: 1px solid rgba(74,222,128,0.2);
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+  }
+
+  .exp-org {
+    font-size: 0.8rem;
+    color: var(--accent2);
+    margin-bottom: 0.8rem;
+  }
+
+  .exp-points {
+    list-style: none;
+  }
+  .exp-points li {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    padding: 0.25rem 0;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .exp-points li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .edu-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 1.4rem 1.8rem;
+  }
+
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-degree {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .edu-year {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+
+  .edu-inst {
+    font-size: 0.82rem;
+    color: var(--accent2);
+    margin-bottom: 0.2rem;
+  }
+
+  .edu-grade {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--green);
+  }
+
+  /* ── CERTIFICATES ── */
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .cert-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.2rem 1.4rem;
+  }
+
+  .cert-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cert-title {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .cert-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent2); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero-name { font-size: 2.2rem; }
+  }
+
+  /* ── SCROLL FADE-IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">AS // ML Engineer</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#certificates">Certificates</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Available for Opportunities</div>
+    <h1 class="hero-name">Abhishek Singh</h1>
+    <div class="hero-roles">
+      <span class="hero-role">ML Engineer</span>
+      <span class="hero-role">Deep Learning Researcher</span>
+      <span class="hero-role">Systems Developer</span>
+      <span class="hero-role">M.Tech @ NIT Kurukshetra</span>
+    </div>
+
+    <div class="code-block">
+      <span class="k">const</span> engineer <span class="p">= {</span><br>
+      &nbsp;&nbsp;name<span class="p">:</span> <span class="s">"Abhishek Singh"</span><span class="p">,</span><br>
+      &nbsp;&nbsp;location<span class="p">:</span> <span class="s">"Lucknow, Uttar Pradesh, IN"</span><span class="p">,</span><br>
+      &nbsp;&nbsp;institution<span class="p">:</span> <span class="s">"NIT Kurukshetra"</span><span class="p">,</span><br>
+      &nbsp;&nbsp;focus<span class="p">:</span> <span class="v">["ML", "Deep Learning", "Computer Vision"]</span><span class="p">,</span><br>
+      &nbsp;&nbsp;cgpa<span class="p">:</span> <span class="s">"8.25"</span><span class="p">,</span><br>
+      &nbsp;&nbsp;status<span class="p">:</span> <span class="s">"building_cool_stuff"</span><br>
+      <span class="p">};</span>
+    </div>
+
+    <div class="hero-btns">
+      <a href="mailto:ar5621996@gmail.com" class="btn btn-primary">⟶ Contact Me</a>
+      <a href="#projects" class="btn btn-outline">Explore Projects</a>
+      <a href="#experience" class="btn btn-outline">View Experience</a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">8.25</div>
+        <div class="stat-label">M.Tech CGPA</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">95%</div>
+        <div class="stat-label">ECG Auth Accuracy</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">60%</div>
+        <div class="stat-label">False Accept Rate Reduction</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">2+</div>
+        <div class="stat-label">Projects Built</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label fade-in">01 · ABOUT</div>
+  <h2 class="section-title fade-in">Who I Am</h2>
+  <p class="about-text fade-in">
+    I'm an ML Engineer and Researcher pursuing M.Tech in Computer Engineering at NIT Kurukshetra, 
+    with a strong foundation in deep learning, computer vision, and systems programming. 
+    My research and projects span medical image analysis (Diabetic Retinopathy detection using Hybrid CNN-ViT), 
+    biometric authentication systems, and high-performance C++ server development.
+    <br><br>
+    During my research internship at IET Lucknow, I pioneered an ECG-based authentication system 
+    achieving 95% accuracy, cutting false acceptance rates by 60%. Outside the lab, I bring strong 
+    leadership skills — previously serving as Placement Coordinator at IET Lucknow, facilitating 
+    student–company interactions and managing recruitment drives.
+  </p>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label fade-in">02 · SKILLS</div>
+  <h2 class="section-title fade-in">Tech Stack</h2>
+  <div class="skills-grid fade-in">
+    <div class="skill-cat">
+      <div class="skill-cat-title">PROGRAMMING</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">C</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">SQL</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">AI / ML</div>
+      <div class="skill-tags">
+        <span class="skill-tag">TensorFlow</span>
+        <span class="skill-tag">PyTorch</span>
+        <span class="skill-tag">Scikit-learn</span>
+        <span class="skill-tag">OpenCV</span>
+        <span class="skill-tag">CNN</span>
+        <span class="skill-tag">Vision Transformer</span>
+        <span class="skill-tag">NLP</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">DATA</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Pandas</span>
+        <span class="skill-tag">NumPy</span>
+        <span class="skill-tag">Matplotlib</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">Kaggle</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">SYSTEMS / TOOLS</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Linux</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">TCP/IP</span>
+        <span class="skill-tag">Multithreading</span>
+        <span class="skill-tag">VS Code</span>
+        <span class="skill-tag">Google Colab</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">COURSEWORK</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Data Structures</span>
+        <span class="skill-tag">OS</span>
+        <span class="skill-tag">DBMS</span>
+        <span class="skill-tag">Computer Networks</span>
+        <span class="skill-tag">COA</span>
+        <span class="skill-tag">Software Testing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label fade-in">03 · PROJECTS</div>
+  <h2 class="section-title fade-in">What I've Built</h2>
+  <div class="projects-list">
+
+    <div class="project-card fade-in">
+      <div class="project-num">PROJECT_01 · 2026 – Ongoing</div>
+      <div class="project-title">Hybrid CNN-ViT for Diabetic Retinopathy</div>
+      <div class="project-sub">Hybrid deep learning model integrating CNN and ViT architectures</div>
+      <p class="project-desc">Developing a hybrid deep learning model for multiclass diabetic retinopathy classification. Leverages CNN for local feature extraction and Vision Transformer (ViT) for capturing global contextual dependencies in retinal fundus images.</p>
+      <ul class="project-highlights">
+        <li>Enhances feature representation for improved DR severity classification</li>
+        <li>Robust framework for medical image analysis and early disease detection</li>
+        <li>CNN local features + ViT global attention combined architecture</li>
+      </ul>
+      <div class="project-badges">
+        <span class="badge">Python</span>
+        <span class="badge">PyTorch</span>
+        <span class="badge">TensorFlow</span>
+        <span class="badge">OpenCV</span>
+        <span class="badge">Vision Transformer</span>
+        <span class="badge">CNN</span>
+        <span class="badge">NumPy</span>
+        <span class="badge">Matplotlib</span>
+      </div>
+      <a href="https://github.com" target="_blank" class="project-link">View on GitHub →</a>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-num">PROJECT_02</div>
+      <div class="project-title">High-Performance Multithreaded HTTP Server</div>
+      <div class="project-sub">C++ · TCP socket programming · Thread pool architecture</div>
+      <p class="project-desc">A multithreaded HTTP server in C++ using TCP socket programming to handle concurrent client requests efficiently, with LRU caching and thread-safe resource management.</p>
+      <ul class="project-highlights">
+        <li>Thread pool architecture for managing multiple concurrent client connections</li>
+        <li>HTTP/1.1 request parsing and response generation modules</li>
+        <li>Mutex-based synchronization to prevent race conditions on shared resources</li>
+        <li>LRU caching system reducing response latency under high-load scenarios</li>
+      </ul>
+      <div class="project-badges">
+        <span class="badge">C++</span>
+        <span class="badge">TCP/IP</span>
+        <span class="badge">Socket Programming</span>
+        <span class="badge">Multithreading</span>
+        <span class="badge">Mutex</span>
+        <span class="badge">STL</span>
+        <span class="badge">Git</span>
+      </div>
+      <a href="https://github.com" target="_blank" class="project-link">View on GitHub →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label fade-in">04 · EXPERIENCE</div>
+  <h2 class="section-title fade-in">Professional Background</h2>
+
+  <div class="exp-card fade-in">
+    <div class="exp-header">
+      <div class="exp-title">Machine Learning Researcher</div>
+      <div class="exp-duration">Jul 2023 – Aug 2023</div>
+    </div>
+    <div class="exp-org">IET Lucknow · 2 months</div>
+    <ul class="exp-points">
+      <li>Pioneered an ECG-based authentication system integrating facial recognition and fingerprint analysis, achieving 95% accuracy in individual identification.</li>
+      <li>Formulated ML algorithms that slashed false acceptance rate by 60% and false rejection rate by 45% vs. traditional biometric systems.</li>
+      <li>Analyzed system performance using EER and ROC curves — showcased 30% improvement in secure and reliable individual identification over baseline methods.</li>
+    </ul>
+  </div>
+
+  <div class="exp-card fade-in">
+    <div class="exp-header">
+      <div class="exp-title">Placement Coordinator</div>
+      <div class="exp-duration">During B.Tech</div>
+    </div>
+    <div class="exp-org">IET Lucknow</div>
+    <ul class="exp-points">
+      <li>Managed placement activities and coordinated with recruiters to facilitate student–company interactions.</li>
+      <li>Developed strong communication and team management skills through coordination of campus recruitment drives.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label fade-in">05 · EDUCATION</div>
+  <h2 class="section-title fade-in">Academic Background</h2>
+  <div class="edu-list">
+
+    <div class="edu-card fade-in">
+      <div class="edu-header">
+        <div class="edu-degree">M.Tech in Computer Engineering</div>
+        <div class="edu-year">2025 – Present</div>
+      </div>
+      <div class="edu-inst">National Institute of Technology (NIT) Kurukshetra · Haryana, India</div>
+      <div class="edu-grade">CGPA: 8.25 / 10.0</div>
+    </div>
+
+    <div class="edu-card fade-in">
+      <div class="edu-header">
+        <div class="edu-degree">B.Tech in Computer Science and Engineering</div>
+        <div class="edu-year">2020 – 2024</div>
+      </div>
+      <div class="edu-inst">Institute of Engineering & Technology, Lucknow · Uttar Pradesh, India</div>
+      <div class="edu-grade">CGPA: 7.09 / 10.0</div>
+    </div>
+
+    <div class="edu-card fade-in">
+      <div class="edu-header">
+        <div class="edu-degree">Intermediate (12th)</div>
+        <div class="edu-year">2018 – 2020</div>
+      </div>
+      <div class="edu-inst">Devasthaly Vidyapeeth, Ballia</div>
+      <div class="edu-grade">Percentage: 88.8%</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATES -->
+<section id="certificates">
+  <div class="section-label fade-in">06 · CERTIFICATES</div>
+  <h2 class="section-title fade-in">Courses & Achievements</h2>
+  <div class="cert-grid fade-in">
+
+    <div class="cert-card">
+      <div class="cert-icon">🔐</div>
+      <div class="cert-title">CN Secure 26 (ISEA)</div>
+      <div class="cert-desc">Learned cybersecurity, cryptography, and network security basics through the ISEA initiative.</div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">🐍</div>
+      <div class="cert-title">Programming with Python</div>
+      <div class="cert-desc">Internshala — Gained Python, OOP, and problem-solving skills through structured coursework.</div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">✈️</div>
+      <div class="cert-title">Skyscanner Simulation (Forage)</div>
+      <div class="cert-desc">Practiced real-world coding and software engineering tasks in an industry simulation environment.</div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">🧠</div>
+      <div class="cert-title">Adaptability & Team Management</div>
+      <div class="cert-desc">Quickly learns new technologies; collaborates effectively in team-based projects with clear communication.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="mailto:ar5621996@gmail.com">⟶ Email</a>
+    <a href="https://github.com" target="_blank">⟶ GitHub</a>
+    <a href="https://www.linkedin.com/in/abhishek-singh-4580002b6/" target="_blank">⟶ LinkedIn</a>
+  </div>
+  // Built with code · Abhishek Singh · 2026 //
+</footer>
+
+<script>
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
